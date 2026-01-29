@@ -103,3 +103,27 @@ form {
   width: 50%;
   margin: auto;
 }
+
+
+/* Priority base style */
+.priority {
+  margin: 12px auto;
+  padding: 6px 0;
+  width: 100%;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+}
+
+.priority.low {
+  background-color: #1f8b24; 
+}
+
+.priority.medium {
+  background-color: #e0ad1f; 
+  color: white;
+}
+
+.priority.high {
+  background-color: #e11414; 
+}

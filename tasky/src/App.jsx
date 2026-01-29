@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import AddTaskForm from './components/Form';
 import { v4 as uuidv4 } from 'uuid';
 
-
 function App() {
 
   const [ formState, setFormState ] = useState({
     title: "",
     description: "",
-    deadline: ""
+    deadline: "",
+    priority: ""
   });
 
   const [taskState, setTaskState] = useState({
@@ -25,7 +25,6 @@ function App() {
     const tasks = [...taskState.tasks];
     tasks[taskIndex].done = !tasks[taskIndex].done;
     setTaskState({ tasks });
-    console.log(`${taskIndex} ${tasks[taskIndex].done}`);
   };
 
   const deleteHandler = (taskIndex) => {
@@ -34,7 +33,6 @@ function App() {
     setTaskState({ tasks });
   };
 
-  // ✅ added after the other handlers
   const formChangeHandler = (event) => {
     let form = { ...formState };
 
@@ -48,6 +46,9 @@ function App() {
       case "deadline":
         form.deadline = event.target.value;
         break;
+      case "priority":
+        form.priority = event.target.value;
+        break;
       default:
         form = formState;
     }
@@ -55,19 +56,29 @@ function App() {
     setFormState(form);
   };
 
-    const formSubmitHandler = (event) => {
+  const formSubmitHandler = (event) => {
     event.preventDefault();
 
     const tasks = [...taskState.tasks];
-    const form = {...formState};
 
-    form.id = uuidv4();
-    
-    tasks.push(form);
-    setTaskState({tasks});
-  }
+    const newTask = {
+      ...formState,
+      id: uuidv4(),
+      done: false
+    };
 
-  
+    tasks.push(newTask);
+    setTaskState({ tasks });
+
+    // optional: reset form after submit
+    setFormState({
+      title: "",
+      description: "",
+      deadline: "",
+      priority: ""
+    });
+  };
+
   return (
     <div className="container">
       <h1>Tasky</h1>
@@ -85,7 +96,10 @@ function App() {
         />
       ))}
 
-          <AddTaskForm submit={formSubmitHandler} change={formChangeHandler} />
+      <AddTaskForm
+        submit={formSubmitHandler}
+        change={formChangeHandler}
+      />
 
     </div>
   );
